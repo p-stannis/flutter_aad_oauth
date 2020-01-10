@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:ui';
-import 'package:flutter/widgets.dart';
-import 'request/authorization_request.dart';
-import 'model/config.dart';
+
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+
+import 'model/config.dart';
+import 'request/authorization_request.dart';
 
 class RequestCode {
   final StreamController<String> _onCodeListener = new StreamController();
