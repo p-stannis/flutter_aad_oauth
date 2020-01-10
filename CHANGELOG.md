@@ -1,3 +1,7 @@
+## 0.0.2
+
+* Update Read.me
+
 ## 0.0.1
 
 * Initial release 
