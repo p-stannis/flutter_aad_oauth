@@ -11,11 +11,11 @@ class AuthStorage {
   Future<void> saveTokenToCache(Token token) async {
     var data = Token.toJsonMap(token);
     var json = Convert.jsonEncode(data);
-    await _secureStorage.write(key:_identifier, value: json);
+    await _secureStorage.write(key: _identifier, value: json);
   }
 
   Future<T> loadTokenToCache<T extends Token>() async {
-    var json = await _secureStorage.read(key:_identifier);
+    var json = await _secureStorage.read(key: _identifier);
     if (json == null) return null;
     try {
       var data = Convert.jsonDecode(json);
@@ -30,6 +30,6 @@ class AuthStorage {
       Token.fromJson(data);
 
   Future clear() async {
-    _secureStorage.delete(key:_identifier);
+    _secureStorage.delete(key: _identifier);
   }
 }

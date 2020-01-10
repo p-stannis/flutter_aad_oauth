@@ -12,7 +12,7 @@ class RequestCode {
   AuthorizationRequest _authorizationRequest;
 
   var _onCodeStream;
-  
+
   RequestCode(Config config) : _config = config {
     _authorizationRequest = new AuthorizationRequest(config);
   }
@@ -20,26 +20,25 @@ class RequestCode {
   Future<String> requestCode() async {
     var code;
     final String urlParams = _constructUrlParams();
-    
+
     await _webView.launch(
         Uri.encodeFull("${_authorizationRequest.url}?$urlParams"),
-        clearCookies: _authorizationRequest.clearCookies, 
-        hidden: false,  
-        rect: _config.screenSize
-    );
+        clearCookies: _authorizationRequest.clearCookies,
+        hidden: false,
+        rect: _config.screenSize);
 
     _webView.onUrlChanged.listen((String url) {
       Uri uri = Uri.parse(url);
 
-      if(uri.queryParameters["error"] != null) {
+      if (uri.queryParameters["error"] != null) {
         _webView.close();
-        throw new Exception("Access denied or authentation canceled."); 
+        throw new Exception("Access denied or authentation canceled.");
       }
-      
+
       if (uri.queryParameters["code"] != null) {
         _webView.close();
         _onCodeListener.add(uri.queryParameters["code"]);
-      }       
+      }
     });
 
     code = await _onCode.first;
@@ -54,7 +53,8 @@ class RequestCode {
   Stream<String> get _onCode =>
       _onCodeStream ??= _onCodeListener.stream.asBroadcastStream();
 
-  String _constructUrlParams() => _mapToQueryParams(_authorizationRequest.parameters);
+  String _constructUrlParams() =>
+      _mapToQueryParams(_authorizationRequest.parameters);
 
   String _mapToQueryParams(Map<String, String> params) {
     final queryParams = <String>[];

@@ -18,14 +18,14 @@ class FlutterAadOauth {
   RequestToken _requestToken;
 
   factory FlutterAadOauth(config) {
-    if ( FlutterAadOauth._instance == null )
+    if (FlutterAadOauth._instance == null)
       FlutterAadOauth._instance = new FlutterAadOauth._internal(config);
     return _instance;
   }
 
   static FlutterAadOauth _instance;
 
-  FlutterAadOauth._internal(config){
+  FlutterAadOauth._internal(config) {
     FlutterAadOauth._config = config;
     _authStorage = _authStorage ?? new AuthStorage();
     _requestCode = new RequestCode(_config);
@@ -38,20 +38,17 @@ class FlutterAadOauth {
 
   Future<void> login() async {
     await _removeOldTokenOnFirstLogin();
-    if (!Token.tokenIsValid(_token) )
-      await _performAuthorization();
+    if (!Token.tokenIsValid(_token)) await _performAuthorization();
   }
 
   Future<String> getAccessToken() async {
-    if (!Token.tokenIsValid(_token) )
-      await _performAuthorization();
+    if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
     return _token.accessToken;
   }
 
   Future<String> getIdToken() async {
-    if (!Token.tokenIsValid(_token) )
-      await _performAuthorization();
+    if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
     return _token.idToken;
   }
