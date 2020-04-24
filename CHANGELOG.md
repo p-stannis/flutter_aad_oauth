@@ -1,3 +1,8 @@
+## 0.0.3
+
+* Update Read.me
+* Implementing new methods to retrieve refresh toekn and other informations from the token
+
 ## 0.0.2
 
 * Update Read.me
