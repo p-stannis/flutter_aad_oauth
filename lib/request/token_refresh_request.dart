@@ -1,11 +1,11 @@
 import 'package:flutter_aad_oauth/model/config.dart';
 
 class TokenRefreshRequestDetails {
-  String url;
-  Map<String, String> params;
-  Map<String, String> headers;
+  String? url;
+  Map<String, String?>? params;
+  Map<String, String>? headers;
 
-  TokenRefreshRequestDetails(Config config, String refreshToken) {
+  TokenRefreshRequestDetails(Config config, String? refreshToken) {
     this.url = config.tokenUrl;
     this.params = {
       "client_id": config.clientId,
@@ -15,7 +15,7 @@ class TokenRefreshRequestDetails {
       "refresh_token": refreshToken
     };
     if (config.clientSecret != null)
-      params.putIfAbsent("client_secret", () => config.clientSecret);
+      params!.putIfAbsent("client_secret", () => config.clientSecret);
 
     this.headers = {
       "Accept": "application/json",

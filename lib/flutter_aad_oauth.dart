@@ -11,29 +11,29 @@ import 'package:flutter_aad_oauth/request_token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FlutterAadOauth {
-  static Config _config;
-  AuthStorage _authStorage;
-  Token _token;
-  RequestCode _requestCode;
-  RequestToken _requestToken;
+  static Config? _config;
+  AuthStorage? _authStorage;
+  Token? _token;
+  late RequestCode _requestCode;
+  late RequestToken _requestToken;
 
   factory FlutterAadOauth(config) {
     if (FlutterAadOauth._instance == null)
       FlutterAadOauth._instance = new FlutterAadOauth._internal(config);
-    return _instance;
+    return _instance!;
   }
 
-  static FlutterAadOauth _instance;
+  static FlutterAadOauth? _instance;
 
   FlutterAadOauth._internal(config) {
     FlutterAadOauth._config = config;
     _authStorage = _authStorage ?? new AuthStorage();
-    _requestCode = new RequestCode(_config);
+    _requestCode = new RequestCode(_config!);
     _requestToken = new RequestToken(_config);
   }
 
-  void setWebViewScreenSize(Rect screenSize) {
-    _config.screenSize = screenSize;
+  void setContext(BuildContext context) {
+    _config!.context = context;
   }
 
   Future<void> login() async {
@@ -41,46 +41,46 @@ class FlutterAadOauth {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
   }
 
-  Future<String> getAccessToken() async {
+  Future<String?> getAccessToken() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token.accessToken;
+    return _token!.accessToken;
   }
 
-  Future<String> getIdToken() async {
+  Future<String?> getIdToken() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token.idToken;
+    return _token!.idToken;
   }
 
-  Future<String> getRefreshToken() async {
+  Future<String?> getRefreshToken() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token.refreshToken;
+    return _token!.refreshToken;
   }
 
-  Future<String> getTokenType() async {
+  Future<String?> getTokenType() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token.tokenType;
+    return _token!.tokenType;
   }
 
-  Future<DateTime> getIssueTimeStamp() async {
+  Future<DateTime?> getIssueTimeStamp() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token.issueTimeStamp;
+    return _token!.issueTimeStamp;
   }
 
-  Future<DateTime> getExpireTimeStamp() async {
+  Future<DateTime?> getExpireTimeStamp() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token.expireTimeStamp;
+    return _token!.expireTimeStamp;
   }
 
-  Future<int> getExpiresIn() async {
+  Future<int?> getExpiresIn() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token.expiresIn;
+    return _token!.expiresIn;
   }
 
   bool tokenIsValid() {
@@ -88,7 +88,7 @@ class FlutterAadOauth {
   }
 
   Future<void> logout() async {
-    await _authStorage.clear();
+    await _authStorage!.clear();
     await _requestCode.clearCookies();
     _token = null;
     FlutterAadOauth(_config);
@@ -96,7 +96,7 @@ class FlutterAadOauth {
 
   Future<void> _performAuthorization() async {
     // load token from cache
-    _token = await _authStorage.loadTokenToCache();
+    _token = await _authStorage!.loadTokenToCache();
 
     //still have refreh token / try to get new access token with refresh token
     if (_token != null)
@@ -112,7 +112,7 @@ class FlutterAadOauth {
     }
 
     //save token to cache
-    await _authStorage.saveTokenToCache(_token);
+    await _authStorage!.saveTokenToCache(_token);
   }
 
   Future<void> _performFullAuthFlow() async {
@@ -126,9 +126,9 @@ class FlutterAadOauth {
   }
 
   Future<void> _performRefreshAuthFlow() async {
-    if (_token.refreshToken != null) {
+    if (_token!.refreshToken != null) {
       try {
-        _token = await _requestToken.requestRefreshToken(_token.refreshToken);
+        _token = await _requestToken.requestRefreshToken(_token!.refreshToken);
       } catch (e) {
         //do nothing (because later we try to do a full oauth code flow request)
       }

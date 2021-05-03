@@ -8,25 +8,25 @@ class AuthStorage {
   FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   final String _identifier = "Token";
 
-  Future<void> saveTokenToCache(Token token) async {
+  Future<void> saveTokenToCache(Token? token) async {
     var data = Token.toJsonMap(token);
     var json = Convert.jsonEncode(data);
     await _secureStorage.write(key: _identifier, value: json);
   }
 
-  Future<T> loadTokenToCache<T extends Token>() async {
+  Future<T?> loadTokenToCache<T extends Token>() async {
     var json = await _secureStorage.read(key: _identifier);
     if (json == null) return null;
     try {
       var data = Convert.jsonDecode(json);
-      return _getTokenFromMap<T>(data);
+      return _getTokenFromMap<T>(data) as FutureOr<T?>;
     } catch (exception) {
       print(exception);
       return null;
     }
   }
 
-  Token _getTokenFromMap<T extends Token>(Map<String, dynamic> data) =>
+  Token _getTokenFromMap<T extends Token>(Map<String, dynamic>? data) =>
       Token.fromJson(data);
 
   Future clear() async {
