@@ -44,43 +44,43 @@ class FlutterAadOauth {
   Future<String?> getAccessToken() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token!.accessToken;
+    return _token?.accessToken;
   }
 
   Future<String?> getIdToken() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token!.idToken;
+    return _token?.idToken;
   }
 
   Future<String?> getRefreshToken() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token!.refreshToken;
+    return _token?.refreshToken;
   }
 
   Future<String?> getTokenType() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token!.tokenType;
+    return _token?.tokenType;
   }
 
   Future<DateTime?> getIssueTimeStamp() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token!.issueTimeStamp;
+    return _token?.issueTimeStamp;
   }
 
   Future<DateTime?> getExpireTimeStamp() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token!.expireTimeStamp;
+    return _token?.expireTimeStamp;
   }
 
   Future<int?> getExpiresIn() async {
     if (!Token.tokenIsValid(_token)) await _performAuthorization();
 
-    return _token!.expiresIn;
+    return _token?.expiresIn;
   }
 
   bool tokenIsValid() {
