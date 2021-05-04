@@ -1,3 +1,7 @@
+## 1.0.0
+
+* Updated to null safety
+
 ## 0.0.3
 
 * Update Read.me
