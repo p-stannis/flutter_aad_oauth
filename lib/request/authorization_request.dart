@@ -1,12 +1,12 @@
 import 'package:flutter_aad_oauth/model/config.dart';
 
 class AuthorizationRequest {
-  String url;
-  String redirectUrl;
-  Map<String, String> parameters;
-  Map<String, String> headers;
-  bool fullScreen;
-  bool clearCookies;
+  String? url;
+  String? redirectUrl;
+  late Map<String, String> parameters;
+  Map<String, String>? headers;
+  bool? fullScreen;
+  bool? clearCookies;
 
   AuthorizationRequest(Config config,
       {bool fullScreen: true, bool clearCookies: false}) {
