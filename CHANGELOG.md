@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Fixed nullable bug
+
 ## 1.0.0
 
 * Updated to null safety

@@ -5,7 +5,7 @@ class TokenRequestDetails {
   Map<String, String?>? params;
   Map<String, String>? headers;
 
-  TokenRequestDetails(Config config, String code) {
+  TokenRequestDetails(Config config, String? code) {
     this.url = config.tokenUrl;
     this.params = {
       "client_id": config.clientId,

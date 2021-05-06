@@ -116,7 +116,7 @@ class FlutterAadOauth {
   }
 
   Future<void> _performFullAuthFlow() async {
-    String code;
+    String? code;
     try {
       code = await _requestCode.requestCode();
       _token = await _requestToken.requestToken(code);

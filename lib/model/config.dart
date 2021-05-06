@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart' show BuildContext, Rect;
+import 'package:flutter/widgets.dart' show BuildContext;
 
 class Config {
   final String azureTennantId;

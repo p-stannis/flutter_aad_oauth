@@ -13,7 +13,7 @@ class RequestToken {
 
   RequestToken(this.config);
 
-  Future<Token> requestToken(String code) async {
+  Future<Token> requestToken(String? code) async {
     _generateTokenRequest(code);
     return await _sendTokenRequest(
         _tokenRequest.url!, _tokenRequest.params, _tokenRequest.headers);
@@ -34,7 +34,7 @@ class RequestToken {
     return token;
   }
 
-  void _generateTokenRequest(String code) {
+  void _generateTokenRequest(String? code) {
     _tokenRequest = new TokenRequestDetails(config!, code);
   }
 

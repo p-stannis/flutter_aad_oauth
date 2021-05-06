@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart'
     show MaterialPageRoute, Navigator, SafeArea, Scaffold;
 import 'package:webview_flutter/webview_flutter.dart';
-
 import 'model/config.dart';
 import 'request/authorization_request.dart';
 
@@ -18,7 +16,7 @@ class RequestCode {
     _authorizationRequest = new AuthorizationRequest(config);
   }
 
-  Future<String> requestCode() async {
+  Future<String?> requestCode() async {
     var code;
     final String urlParams = _constructUrlParams();
 
@@ -55,7 +53,7 @@ class RequestCode {
     CookieManager().clearCookies();
   }
 
-  Stream<String> get _onCode =>
+  Stream<String?> get _onCode =>
       _onCodeStream ??= _onCodeListener.stream.asBroadcastStream();
 
   String _constructUrlParams() =>
