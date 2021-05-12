@@ -1,3 +1,7 @@
+## 1.0.3
+
+* Fixed problem with url in iOS launch
+
 ## 1.0.2
 
 * tokenIsValid method changed
