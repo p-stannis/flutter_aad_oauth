@@ -1,3 +1,7 @@
+## 1.0.2
+
+* tokenIsValid method changed
+
 ## 1.0.1
 
 * Fixed nullable bug
