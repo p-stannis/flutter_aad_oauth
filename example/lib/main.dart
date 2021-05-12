@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             title: Text(
               "AzureAD OAuth",
-              style: Theme.of(context).textTheme.headline,
+              style: Theme.of(context).textTheme.headline5,
             ),
           ),
           ListTile(
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void showMessage(String text) {
     var alert = new AlertDialog(content: new Text(text), actions: <Widget>[
-      new FlatButton(
+      new ElevatedButton(
           child: const Text("Ok"),
           onPressed: () {
             Navigator.pop(context);
