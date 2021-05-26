@@ -83,9 +83,15 @@ class FlutterAadOauth {
     return _token?.expiresIn;
   }
 
-  Future<bool> tokenIsValid() async {
+  Future<bool> tokenIsValid({refreshIfNot = true}) async {
     if (_token == null) _token = await _authStorage?.loadTokenToCache();
-    return Token.tokenIsValid(_token);
+    if (Token.tokenIsValid(_token)) return true;
+    if (refreshIfNot) {
+      await _performRefreshAuthFlow();
+      return Token.tokenIsValid(_token);
+    } else {
+      return false;
+    }
   }
 
   Future<void> logout() async {
