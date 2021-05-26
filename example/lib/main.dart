@@ -43,10 +43,11 @@ class _MyHomePageState extends State<MyHomePage> {
     "https://login.live.com/oauth20_desktop.srf",
   );
   final FlutterAadOauth oauth = FlutterAadOauth(config);
-  
+
   @override
   initState() {
     oauth.setContext(context);
+    checkIsLogged();
     super.initState();
   }
 
@@ -95,6 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
           })
     ]);
     showDialog(context: context, builder: (BuildContext context) => alert);
+  }
+
+  void checkIsLogged() async {
+    if (await oauth.tokenIsValid()) {
+      String? accessToken = await oauth.getAccessToken();
+      showMessage("Access token: $accessToken");
+    }
   }
 
   void login() async {
