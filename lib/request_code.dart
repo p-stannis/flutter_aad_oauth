@@ -32,8 +32,8 @@ class RequestCode {
 
           if (uri.queryParameters["error"] != null) {
             Navigator.of(_config.context!).pop();
-            _onCodeListener.addError(
-                new Exception("Access denied or authentation canceled."));
+            _onCodeListener
+                .addError(Exception("Access denied or authentation canceled."));
           }
 
           if (uri.queryParameters["code"] != null) {
