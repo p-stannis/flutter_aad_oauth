@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter_aad_oauth: 
     path: ../
+  
+  keyboard_actions: ^3.4.0
   flutter:
     sdk: flutter
 

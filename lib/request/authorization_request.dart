@@ -1,4 +1,5 @@
 import 'package:flutter_aad_oauth/model/config.dart';
+import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 
 class AuthorizationRequest {
   String? url;
@@ -18,6 +19,9 @@ class AuthorizationRequest {
       "redirect_uri": config.redirectUri,
       "scope": config.scope
     };
+    if (PlatformCheck.isWeb) {
+      this.parameters.addAll({"nonce": config.nonce});
+    }
     this.fullScreen = fullScreen;
     this.clearCookies = clearCookies;
   }

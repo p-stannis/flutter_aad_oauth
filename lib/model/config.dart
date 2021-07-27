@@ -2,23 +2,30 @@ import 'package:flutter/widgets.dart' show BuildContext;
 
 class Config {
   final String azureTennantId;
+  final String clientId;
+  final String scope;
+  final String responseType;
+  final String redirectUri;
+  final String? clientSecret;
+  final String? resource;
+  final String contentType;
+  BuildContext? context;
   String? authorizationUrl;
   String? tokenUrl;
-  final String clientId;
-  final String? clientSecret;
-  final String redirectUri;
-  final String responseType;
-  final String contentType;
-  final String scope;
-  final String? resource;
-  BuildContext? context;
+  final String nonce;
 
-  Config(this.azureTennantId, this.clientId, this.scope, this.redirectUri,
-      {this.clientSecret,
+  ///ResponseType to mobile usually is "code", and web usually is "id_token+token"
+  Config(
+      {required this.azureTennantId,
+      required this.clientId,
+      required this.scope,
+      required this.redirectUri,
+      required this.responseType,
+      this.clientSecret,
       this.resource,
-      this.responseType = "code",
       this.contentType = "application/x-www-form-urlencoded",
-      this.context}) {
+      this.context,
+      this.nonce = "nonce_value"}) {
     this.authorizationUrl =
         "https://login.microsoftonline.com/$azureTennantId/oauth2/v2.0/authorize";
     this.tokenUrl =
