@@ -1,7 +1,7 @@
 name: flutter_aad_oauth_example
 description: Demonstrates how to use the flutter_aad_oauth plugin.
 publish_to: 'none'
-version: 1.0.0
+version: 2.0.0
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter_aad_oauth: 
     path: ../
+  
+  keyboard_actions: ^3.4.0
   flutter:
     sdk: flutter
 

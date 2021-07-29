@@ -1,6 +1,7 @@
 import 'package:flutter_aad_oauth/flutter_aad_oauth.dart';
 import 'package:flutter_aad_oauth/model/config.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 
 void main() => runApp(new MyApp());
 
@@ -36,16 +37,42 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static final Config config = new Config(
-    "YOUR_TENANT_ID",
-    "YOUR_CLIENT_ID",
-    "openid profile offline_access",
-    "https://login.live.com/oauth20_desktop.srf",
-  );
-  final FlutterAadOauth oauth = FlutterAadOauth(config);
+  static const String TENANT_ID = "YOUR_TENANT_ID";
+  static const String CLIENT_ID = "YOUR_CLIENT_ID";
+
+  late Config config;
+  late FlutterAadOauth oauth = FlutterAadOauth(config);
 
   @override
   initState() {
+    var redirectUri;
+    late String scope;
+    late String responseType;
+
+    if (PlatformCheck.isWeb) {
+      scope = "openid profile email offline_access user.read";
+      responseType = "id_token+token";
+      final currentUri = Uri.base;
+      redirectUri = Uri(
+        host: currentUri.host,
+        scheme: currentUri.scheme,
+        port: currentUri.port,
+        path: '/authRedirect.html',
+      );
+    } else {
+      scope = "openid profile offline_access";
+      responseType = "code";
+      redirectUri = "https://login.live.com/oauth20_desktop.srf";
+    }
+
+    config = new Config(
+        azureTennantId: TENANT_ID,
+        clientId: CLIENT_ID,
+        scope: scope,
+        redirectUri: "$redirectUri",
+        responseType: responseType);
+
+    oauth = FlutterAadOauth(config);
     oauth.setContext(context);
     checkIsLogged();
     super.initState();

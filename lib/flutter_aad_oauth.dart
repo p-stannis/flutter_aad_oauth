@@ -8,6 +8,8 @@ import 'package:flutter_aad_oauth/model/config.dart';
 import 'package:flutter_aad_oauth/model/token.dart';
 import 'package:flutter_aad_oauth/request_code.dart';
 import 'package:flutter_aad_oauth/request_token.dart';
+import 'package:flutter_aad_oauth/request_token_web.dart';
+import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FlutterAadOauth {
@@ -15,6 +17,7 @@ class FlutterAadOauth {
   AuthStorage? _authStorage;
   Token? _token;
   late RequestCode _requestCode;
+  late RequestTokenWeb _requestTokenWeb;
   late RequestToken _requestToken;
 
   factory FlutterAadOauth(config) {
@@ -28,7 +31,11 @@ class FlutterAadOauth {
   FlutterAadOauth._internal(config) {
     FlutterAadOauth._config = config;
     _authStorage = _authStorage ?? new AuthStorage();
-    _requestCode = new RequestCode(_config!);
+    if (PlatformCheck.isWeb) {
+      _requestTokenWeb = RequestTokenWeb(_config!);
+    } else {
+      _requestCode = new RequestCode(_config!);
+    }
     _requestToken = new RequestToken(_config);
   }
 
@@ -96,7 +103,9 @@ class FlutterAadOauth {
 
   Future<void> logout() async {
     await _authStorage?.clear();
-    await _requestCode.clearCookies();
+    if (!PlatformCheck.isWeb) {
+      await _requestCode.clearCookies();
+    }
     _token = null;
     FlutterAadOauth(_config);
   }
@@ -104,7 +113,6 @@ class FlutterAadOauth {
   Future<void> _performAuthorization() async {
     // load token from cache
     _token = await _authStorage?.loadTokenToCache();
-
     //still have refreh token / try to get new access token with refresh token
     if (_token != null)
       await _performRefreshAuthFlow();
@@ -125,8 +133,12 @@ class FlutterAadOauth {
   Future<void> _performFullAuthFlow() async {
     String? code;
     try {
-      code = await _requestCode.requestCode();
-      _token = await _requestToken.requestToken(code);
+      if (PlatformCheck.isWeb) {
+        _token = await _requestTokenWeb.requestToken();
+      } else {
+        code = await _requestCode.requestCode();
+        _token = await _requestToken.requestToken(code);
+      }
     } catch (e) {
       rethrow;
     }

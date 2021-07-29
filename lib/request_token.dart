@@ -39,6 +39,7 @@ class RequestToken {
   }
 
   void _generateTokenRefreshRequest(String? refreshToken) {
-    _tokenRefreshRequest = new TokenRefreshRequestDetails(config!, refreshToken);
+    _tokenRefreshRequest =
+        new TokenRefreshRequestDetails(config!, refreshToken);
   }
 }

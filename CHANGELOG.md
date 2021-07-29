@@ -1,3 +1,8 @@
+## 2.0.0
+
+* Add Flutter Web Support
+* Updated initial config to receive new parms and support web auth
+
 ## 1.0.4
 
 * Checking if the token is valid now, update if necessary

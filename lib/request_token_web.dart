@@ -1,47 +1,53 @@
 import 'dart:async';
-import 'package:flutter/material.dart'
-    show MaterialPageRoute, Navigator, SafeArea, Scaffold;
-import 'package:flutter/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'model/config.dart';
+import 'package:universal_html/html.dart' as html;
+import 'model/token.dart';
 import 'request/authorization_request.dart';
 
-class RequestCode {
-  final StreamController<String?> _onCodeListener = new StreamController();
+class RequestTokenWeb {
+  final StreamController<Map<String, String>> _onCodeListener =
+      new StreamController();
   final Config _config;
   late AuthorizationRequest _authorizationRequest;
+  html.WindowBase? _popupWin;
 
   var _onCodeStream;
 
-  RequestCode(Config config) : _config = config {
+  RequestTokenWeb(Config config) : _config = config {
     _authorizationRequest = new AuthorizationRequest(config);
   }
 
-  Future<String?> requestCode() async {
-    var code;
+  Future<Token> requestToken() async {
+    late Token token;
     final String urlParams = _constructUrlParams();
     if (_config.context != null) {
       String initialURL =
           ("${_authorizationRequest.url}?$urlParams").replaceAll(" ", "%20");
 
-      await _mobileAuth(initialURL);
+      _webAuth(initialURL);
     } else {
       throw Exception("Context is null. Please call setContext(context).");
     }
 
-    code = await _onCode.first;
-    return code;
+    var jsonToken = await _onCode.first;
+    token = Token.fromJson(jsonToken);
+    return token;
   }
 
-  _mobileAuth(String initialURL) async {
-    var webView = WebView(
-      initialUrl: initialURL,
-      javascriptMode: JavascriptMode.unrestricted,
-      onPageFinished: (url) => _geturlData(url),
-    );
-
-    await Navigator.of(_config.context!).push(MaterialPageRoute(
-        builder: (context) => Scaffold(body: SafeArea(child: webView))));
+  _webAuth(String initialURL) {
+    html.window.onMessage.listen((event) {
+      var tokenParm = 'access_token';
+      if (event.data.toString().contains(tokenParm)) {
+        _geturlData(event.data.toString());
+      }
+      if (event.data.toString().contains("error")) {
+        _closeWebWindow();
+        throw new Exception("Access denied or authentation canceled.");
+      }
+    });
+    _popupWin = html.window.open(
+        initialURL, "Microsoft Auth", "width=800, height=900, scrollbars=yes");
   }
 
   _geturlData(String _url) {
@@ -49,15 +55,21 @@ class RequestCode {
     Uri uri = Uri.parse(url);
 
     if (uri.queryParameters["error"] != null) {
-      Navigator.of(_config.context!).pop();
+      _closeWebWindow();
       _onCodeListener
           .addError(new Exception("Access denied or authentation canceled."));
     }
 
-    var token = uri.queryParameters["code"];
-    if (token != null) {
-      _onCodeListener.add(token);
-      Navigator.of(_config.context!).pop();
+    var token = uri.queryParameters;
+    _onCodeListener.add(token);
+
+    _closeWebWindow();
+  }
+
+  _closeWebWindow() {
+    if (_popupWin != null) {
+      _popupWin?.close();
+      _popupWin = null;
     }
   }
 
@@ -65,7 +77,7 @@ class RequestCode {
     CookieManager().clearCookies();
   }
 
-  Stream<String?> get _onCode =>
+  Stream<Map<String, String>> get _onCode =>
       _onCodeStream ??= _onCodeListener.stream.asBroadcastStream();
 
   String _constructUrlParams() =>

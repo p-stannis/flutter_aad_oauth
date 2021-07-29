@@ -11,6 +11,8 @@ dependencies:
   flutter_secure_storage: ^4.2.0
   http: ^0.13.2
   shared_preferences: ^2.0.5
+  universal_html: ^2.0.8
+  keyboard_actions: ^3.4.0
   flutter:
     sdk: flutter
 
@@ -23,6 +25,18 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  # plugin:
+  #   platforms:
+  #     android:
+  #       package: com.example.flutter_aad_oauth
+  #       pluginClass: flutter_aad_oauth
+  #       fileName: flutter_aad_oauth_web.dart
+  #     ios:
+  #       pluginClass: flutter_aad_oauth
+  #       fileName: flutter_aad_oauth_web.dart
+  #     web:
+  #       pluginClass: flutter_aad_oauth
+  #       fileName: flutter_aad_oauth_web.dart
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
