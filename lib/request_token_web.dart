@@ -56,7 +56,8 @@ class RequestTokenWeb {
 
     if (uri.queryParameters["error"] != null) {
       _closeWebWindow();
-      throw new Exception("Access denied or authentation canceled.");
+      _onCodeListener
+          .addError(new Exception("Access denied or authentation canceled."));
     }
 
     var token = uri.queryParameters;

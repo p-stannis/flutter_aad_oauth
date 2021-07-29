@@ -37,7 +37,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //TODO remover
   static const String TENANT_ID = "YOUR_TENANT_ID";
   static const String CLIENT_ID = "YOUR_CLIENT_ID";
 
