@@ -1,3 +1,6 @@
+## 2.0.1
+* Fixed bug in web refresh flow
+
 ## 2.0.0
 
 * Add Flutter Web Support
