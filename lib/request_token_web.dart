@@ -15,7 +15,7 @@ class RequestTokenWeb {
   var _onCodeStream;
 
   RequestTokenWeb(Config config) : _config = config {
-    _authorizationRequest = new AuthorizationRequest(config);
+    _authorizationRequest = AuthorizationRequest(config);
   }
 
   Future<Token> requestToken() async {

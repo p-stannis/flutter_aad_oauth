@@ -1,3 +1,6 @@
+## 2.1.0
+* nFlutterAadOauth is no longer a singleton. We can authenticate to multiple systems
+
 ## 2.0.1
 * Fixed bug in web refresh flow
 

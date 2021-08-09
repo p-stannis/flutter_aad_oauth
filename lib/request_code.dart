@@ -14,7 +14,7 @@ class RequestCode {
   var _onCodeStream;
 
   RequestCode(Config config) : _config = config {
-    _authorizationRequest = new AuthorizationRequest(config);
+    _authorizationRequest = AuthorizationRequest(config);
   }
 
   Future<String?> requestCode() async {

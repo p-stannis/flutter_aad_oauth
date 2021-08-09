@@ -20,15 +20,7 @@ class FlutterAadOauth {
   late RequestTokenWeb _requestTokenWeb;
   late RequestToken _requestToken;
 
-  factory FlutterAadOauth(config) {
-    if (FlutterAadOauth._instance == null)
-      FlutterAadOauth._instance = new FlutterAadOauth._internal(config);
-    return _instance!;
-  }
-
-  static FlutterAadOauth? _instance;
-
-  FlutterAadOauth._internal(config) {
+  FlutterAadOauth(config) {
     FlutterAadOauth._config = config;
     _authStorage = _authStorage ?? new AuthStorage();
     if (PlatformCheck.isWeb) {
