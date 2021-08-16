@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'model/config.dart';
 import 'package:universal_html/html.dart' as html;
@@ -88,5 +89,9 @@ class RequestTokenWeb {
     params
         .forEach((String key, String value) => queryParams.add("$key=$value"));
     return queryParams.join("&");
+  }
+
+  void setContext(BuildContext context) {
+    _config.context = context;
   }
 }

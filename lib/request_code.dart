@@ -77,4 +77,8 @@ class RequestCode {
         .forEach((String key, String value) => queryParams.add("$key=$value"));
     return queryParams.join("&");
   }
+
+  void setContext(BuildContext context) {
+    _config.context = context;
+  }
 }

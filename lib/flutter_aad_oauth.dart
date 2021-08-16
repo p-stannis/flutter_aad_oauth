@@ -13,7 +13,7 @@ import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FlutterAadOauth {
-  static Config? _config;
+  static late Config _config;
   AuthStorage? _authStorage;
   Token? _token;
   late RequestCode _requestCode;
@@ -24,15 +24,21 @@ class FlutterAadOauth {
     FlutterAadOauth._config = config;
     _authStorage = _authStorage ?? new AuthStorage();
     if (PlatformCheck.isWeb) {
-      _requestTokenWeb = RequestTokenWeb(_config!);
+      _requestTokenWeb = RequestTokenWeb(_config);
     } else {
-      _requestCode = new RequestCode(_config!);
+      _requestCode = new RequestCode(_config);
     }
     _requestToken = new RequestToken(_config);
   }
 
   void setContext(BuildContext context) {
-    _config!.context = context;
+    _config.context = context;
+    _requestToken.setContext(context);
+    if (PlatformCheck.isWeb) {
+      _requestTokenWeb.setContext(context);
+    } else {
+      _requestCode.setContext(context);
+    }
   }
 
   Future<void> login() async {

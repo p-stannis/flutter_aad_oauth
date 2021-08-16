@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'model/config.dart';
 import 'request/token_refresh_request.dart';
@@ -7,11 +8,11 @@ import 'request/token_request.dart';
 import 'model/token.dart';
 
 class RequestToken {
-  final Config? config;
+  late Config _config;
   late TokenRequestDetails _tokenRequest;
   late TokenRefreshRequestDetails _tokenRefreshRequest;
 
-  RequestToken(this.config);
+  RequestToken(this._config);
 
   Future<Token> requestToken(String? code) async {
     _generateTokenRequest(code);
@@ -35,11 +36,15 @@ class RequestToken {
   }
 
   void _generateTokenRequest(String? code) {
-    _tokenRequest = new TokenRequestDetails(config!, code);
+    _tokenRequest = new TokenRequestDetails(_config, code);
   }
 
   void _generateTokenRefreshRequest(String? refreshToken) {
     _tokenRefreshRequest =
-        new TokenRefreshRequestDetails(config!, refreshToken);
+        new TokenRefreshRequestDetails(_config, refreshToken);
+  }
+
+  void setContext(BuildContext context) {
+    _config.context = context;
   }
 }
