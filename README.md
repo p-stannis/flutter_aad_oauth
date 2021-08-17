@@ -23,10 +23,11 @@ final Config config = Config(
 final AadOAuth oauth = AadOAuth(config);
 ```
 This allows you to pass in an tenant ID, client ID, scope and redirect url.
-### Two important things:
+### Four important things:
 1. ResponseType for mobile is usually "code", and web is usually "id_token + token";
 2. Redirect URI to Flutter Web is explained below.
 3. `nonce` is an optional parm to Web flow
+4. To save multiple tokens it is necessary to pass tokenIdentifier in the FlutterAadOauth constructor. The parameter is used to define different names in storage, avoiding overwriting data.
 
 
 Then once you have an OAuth instance, you can call `login()` and afterwards `getAccessToken()` or `getIdToken()` or the `getRefreshToken()` to retrieve an access token or the id token or the refresh token:

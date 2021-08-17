@@ -19,10 +19,12 @@ class FlutterAadOauth {
   late RequestCode _requestCode;
   late RequestTokenWeb _requestTokenWeb;
   late RequestToken _requestToken;
+  late String tokenIdentifier;
 
-  FlutterAadOauth(config) {
+  FlutterAadOauth(config, {this.tokenIdentifier = ""}) {
     FlutterAadOauth._config = config;
-    _authStorage = _authStorage ?? new AuthStorage();
+    _authStorage =
+        _authStorage ?? new AuthStorage(tokenIdentifier: tokenIdentifier);
     if (PlatformCheck.isWeb) {
       _requestTokenWeb = RequestTokenWeb(_config);
     } else {
@@ -149,6 +151,8 @@ class FlutterAadOauth {
       } catch (e) {
         //do nothing (because later we try to do a full oauth code flow request)
       }
+    } else {
+      _performFullAuthFlow();
     }
   }
 

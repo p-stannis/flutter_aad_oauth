@@ -1,3 +1,6 @@
+## 2.1.2
+* Optional parameter added to FlutterAadOauth to allow saving multiple tokens. Details in README
+
 ## 2.1.1
 * Fixed context issues for launching webview
 

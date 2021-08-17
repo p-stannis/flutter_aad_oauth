@@ -9,8 +9,9 @@ import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 class AuthStorage {
   static AuthStorage shared = new AuthStorage();
   late IStorage _storage;
-  final String _identifier = "Token";
-  AuthStorage() {
+  late String _identifier = "Token";
+  AuthStorage({String tokenIdentifier = ""}) {
+    _identifier += tokenIdentifier;
     if (PlatformCheck.isWeb) {
       _storage = WebStorage();
     } else {
