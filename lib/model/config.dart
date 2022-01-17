@@ -23,12 +23,10 @@ class Config {
       required this.responseType,
       this.clientSecret,
       this.resource,
-      this.contentType = "application/x-www-form-urlencoded",
+      this.contentType = 'application/x-www-form-urlencoded',
       this.context,
-      this.nonce = "nonce_value"}) {
-    this.authorizationUrl =
-        "https://login.microsoftonline.com/$azureTennantId/oauth2/v2.0/authorize";
-    this.tokenUrl =
-        "https://login.microsoftonline.com/$azureTennantId/oauth2/v2.0/token";
+      this.nonce = 'nonce_value'}) {
+    authorizationUrl = 'https://login.microsoftonline.com/$azureTennantId/oauth2/v2.0/authorize';
+    tokenUrl = 'https://login.microsoftonline.com/$azureTennantId/oauth2/v2.0/token';
   }
 }

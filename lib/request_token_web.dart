@@ -1,14 +1,15 @@
 import 'dart:async';
+
 import 'package:flutter/widgets.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'model/config.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:webview_flutter/webview_flutter.dart';
+
+import 'model/config.dart';
 import 'model/token.dart';
 import 'request/authorization_request.dart';
 
 class RequestTokenWeb {
-  final StreamController<Map<String, String>> _onCodeListener =
-      new StreamController();
+  final StreamController<Map<String, String>> _onCodeListener = StreamController();
   final Config _config;
   late AuthorizationRequest _authorizationRequest;
   html.WindowBase? _popupWin;
@@ -23,12 +24,11 @@ class RequestTokenWeb {
     late Token token;
     final String urlParams = _constructUrlParams();
     if (_config.context != null) {
-      String initialURL =
-          ("${_authorizationRequest.url}?$urlParams").replaceAll(" ", "%20");
+      String initialURL = ('${_authorizationRequest.url}?$urlParams').replaceAll(' ', '%20');
 
       _webAuth(initialURL);
     } else {
-      throw Exception("Context is null. Please call setContext(context).");
+      throw Exception('Context is null. Please call setContext(context).');
     }
 
     var jsonToken = await _onCode.first;
@@ -42,23 +42,21 @@ class RequestTokenWeb {
       if (event.data.toString().contains(tokenParm)) {
         _geturlData(event.data.toString());
       }
-      if (event.data.toString().contains("error")) {
+      if (event.data.toString().contains('error')) {
         _closeWebWindow();
-        throw new Exception("Access denied or authentation canceled.");
+        throw Exception('Access denied or authentation canceled.');
       }
     });
-    _popupWin = html.window.open(
-        initialURL, "Microsoft Auth", "width=800, height=900, scrollbars=yes");
+    _popupWin = html.window.open(initialURL, 'Microsoft Auth', 'width=800, height=900, scrollbars=yes');
   }
 
   _geturlData(String _url) {
-    var url = _url.replaceFirst('#', "?");
+    var url = _url.replaceFirst('#', '?');
     Uri uri = Uri.parse(url);
 
-    if (uri.queryParameters["error"] != null) {
+    if (uri.queryParameters['error'] != null) {
       _closeWebWindow();
-      _onCodeListener
-          .addError(new Exception("Access denied or authentation canceled."));
+      _onCodeListener.addError(Exception('Access denied or authentation canceled.'));
     }
 
     var token = uri.queryParameters;
@@ -75,20 +73,17 @@ class RequestTokenWeb {
   }
 
   Future<void> clearCookies() async {
-    CookieManager().clearCookies();
+    await CookieManager().clearCookies();
   }
 
-  Stream<Map<String, String>> get _onCode =>
-      _onCodeStream ??= _onCodeListener.stream.asBroadcastStream();
+  Stream<Map<String, String>> get _onCode => _onCodeStream ??= _onCodeListener.stream.asBroadcastStream();
 
-  String _constructUrlParams() =>
-      _mapToQueryParams(_authorizationRequest.parameters);
+  String _constructUrlParams() => _mapToQueryParams(_authorizationRequest.parameters);
 
   String _mapToQueryParams(Map<String, String> params) {
     final queryParams = <String>[];
-    params
-        .forEach((String key, String value) => queryParams.add("$key=$value"));
-    return queryParams.join("&");
+    params.forEach((String key, String value) => queryParams.add('$key=$value'));
+    return queryParams.join('&');
   }
 
   void setContext(BuildContext context) {

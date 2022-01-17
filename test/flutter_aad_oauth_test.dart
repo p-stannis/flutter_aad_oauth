@@ -4,13 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('adds one to input values', () {
-    final Config config = new Config(
-        azureTennantId: "YOUR TENANT ID",
-        clientId: "YOUR CLIENT ID",
-        scope: "openid profile offline_access",
-        redirectUri: "redirectUri",
-        responseType: "code");
-    final FlutterAadOauth oauth = new FlutterAadOauth(config);
+    final Config config = Config(
+        azureTennantId: 'YOUR TENANT ID',
+        clientId: 'YOUR CLIENT ID',
+        scope: 'openid profile offline_access',
+        redirectUri: 'redirectUri',
+        responseType: 'code');
+    final FlutterAadOauth oauth = FlutterAadOauth(config);
     oauth.toString();
   });
 }
