@@ -1,13 +1,17 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_aad_oauth/flutter_aad_oauth.dart';
 import 'package:flutter_aad_oauth/model/config.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -18,22 +22,22 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'AAD OAuth Demo',
-      theme: new ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'AAD OAuth Home'),
+      home: const MyHomePage(title: 'AAD OAuth Home'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, this.title}) : super(key: key);
   final String? title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -45,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   initState() {
-    var redirectUri;
+    Object redirectUri;
     late String scope;
     late String responseType;
 
@@ -65,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
       redirectUri = 'https://login.live.com/oauth20_desktop.srf';
     }
 
-    config = new Config(
+    config = Config(
         azureTennantId: TENANT_ID,
         clientId: CLIENT_ID,
         scope: scope,
@@ -78,10 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title!),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title!),
       ),
       body: ListView(
         children: <Widget>[
@@ -92,15 +97,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.launch),
-            title: Text('Login'),
+            leading: const Icon(Icons.launch),
+            title: const Text('Login'),
             onTap: () {
               login();
             },
           ),
           ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('Logout'),
+            leading: const Icon(Icons.delete),
+            title: const Text('Logout'),
             onTap: () {
               logout();
             },
@@ -115,8 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void showMessage(String text) {
-    var alert = new AlertDialog(content: new Text(text), actions: <Widget>[
-      new ElevatedButton(
+    var alert = AlertDialog(content: Text(text), actions: <Widget>[
+      ElevatedButton(
           child: const Text('Ok'),
           onPressed: () {
             Navigator.pop(context);

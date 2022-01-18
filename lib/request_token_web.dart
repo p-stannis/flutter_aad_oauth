@@ -14,7 +14,7 @@ class RequestTokenWeb {
   late AuthorizationRequest _authorizationRequest;
   html.WindowBase? _popupWin;
 
-  var _onCodeStream;
+  Stream<Map<String, String>>? _onCodeStream;
 
   RequestTokenWeb(Config config) : _config = config {
     _authorizationRequest = AuthorizationRequest(config);

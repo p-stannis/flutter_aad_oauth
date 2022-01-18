@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:flutter/material.dart' show MaterialPageRoute, Navigator, SafeArea, Scaffold;
+import 'package:flutter/material.dart' show MaterialPageRoute, Navigator, SafeArea;
 import 'package:flutter/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -13,7 +12,7 @@ class RequestCode {
   final Config _config;
   late AuthorizationRequest _authorizationRequest;
 
-  var _onCodeStream;
+  Stream<String?>? _onCodeStream;
 
   RequestCode(Config config) : _config = config {
     _authorizationRequest = AuthorizationRequest(config);
@@ -35,7 +34,7 @@ class RequestCode {
   }
 
   _mobileAuth(String initialURL) async {
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView(); // webview_flutter: ^3.0.0 BREAKING CHANGE Not necessary
 
     var webView = WebView(
       initialUrl: initialURL,
@@ -44,7 +43,7 @@ class RequestCode {
     );
 
     await Navigator.of(_config.context!)
-        .push(MaterialPageRoute(builder: (context) => Scaffold(body: SafeArea(child: webView))));
+        .push(MaterialPageRoute(builder: (context) => SafeArea(child: webView)));
   }
 
   _geturlData(String _url) {

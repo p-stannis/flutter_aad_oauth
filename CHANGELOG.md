@@ -1,3 +1,6 @@
+## 2.3.0
+* Update dependency to latest version 
+
 ## 2.2.0
 * Fixed Display ID mismatch found
 * Removed keyboard_actions
