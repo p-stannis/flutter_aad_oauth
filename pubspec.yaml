@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   webview_flutter: ^2.0.4
-  flutter_secure_storage: ^4.2.0
+  flutter_secure_storage: ^5.0.0-beta.5
   http: ^0.13.2
   shared_preferences: ^2.0.5
   universal_html: ^2.0.8
