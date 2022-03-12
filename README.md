@@ -15,7 +15,7 @@ Afterwards you have to initialize the library as follow:
 
 ```dart
 final Config config = Config(
-        azureTennantId: "$TENANT_ID",
+        azureTenantId: "$TENANT_ID",
         clientId: "$CLIENT_ID",
         scope: "$scope",
         redirectUri: "$redirectUri",
