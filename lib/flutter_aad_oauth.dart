@@ -2,15 +2,16 @@ library flutter_aad_oauth;
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter_aad_oauth/helper/auth_storage.dart';
-import 'package:flutter_aad_oauth/model/config.dart';
-import 'package:flutter_aad_oauth/model/token.dart';
-import 'package:flutter_aad_oauth/request_code.dart';
-import 'package:flutter_aad_oauth/request_token.dart';
-import 'package:flutter_aad_oauth/request_token_web.dart';
-import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'helper/auth_storage.dart';
+import 'model/config.dart';
+import 'model/token.dart';
+import 'request_code.dart';
+import 'request_token.dart';
+import 'request_token_web.dart';
 
 class FlutterAadOauth {
   static late Config _config;
@@ -21,22 +22,21 @@ class FlutterAadOauth {
   late RequestToken _requestToken;
   late String tokenIdentifier;
 
-  FlutterAadOauth(config, {this.tokenIdentifier = ""}) {
+  FlutterAadOauth(config, {this.tokenIdentifier = ''}) {
     FlutterAadOauth._config = config;
-    _authStorage =
-        _authStorage ?? new AuthStorage(tokenIdentifier: tokenIdentifier);
-    if (PlatformCheck.isWeb) {
+    _authStorage = _authStorage ?? AuthStorage(tokenIdentifier: tokenIdentifier);
+    if (kIsWeb) {
       _requestTokenWeb = RequestTokenWeb(_config);
     } else {
-      _requestCode = new RequestCode(_config);
+      _requestCode = RequestCode(_config);
     }
-    _requestToken = new RequestToken(_config);
+    _requestToken = RequestToken(_config);
   }
 
   void setContext(BuildContext context) {
     _config.context = context;
     _requestToken.setContext(context);
-    if (PlatformCheck.isWeb) {
+    if (kIsWeb) {
       _requestTokenWeb.setContext(context);
     } else {
       _requestCode.setContext(context);
@@ -91,7 +91,7 @@ class FlutterAadOauth {
   }
 
   Future<bool> tokenIsValid({refreshIfNot = true}) async {
-    if (_token == null) _token = await _authStorage?.loadTokenToCache();
+    _token ??= await _authStorage?.loadTokenToCache();
     if (Token.tokenIsValid(_token)) return true;
     if (refreshIfNot) {
       await _performRefreshAuthFlow();
@@ -103,7 +103,7 @@ class FlutterAadOauth {
 
   Future<void> logout() async {
     await _authStorage?.clear();
-    if (!PlatformCheck.isWeb) {
+    if (!kIsWeb) {
       await _requestCode.clearCookies();
     }
     _token = null;
@@ -114,11 +114,9 @@ class FlutterAadOauth {
     // load token from cache
     _token = await _authStorage?.loadTokenToCache();
     //still have refreh token / try to get new access token with refresh token
-    if (_token?.refreshToken != null)
+    if (_token?.refreshToken != null) {
       await _performRefreshAuthFlow();
-
-    // if we have no refresh token try to perform full request code oauth flow
-    else {
+    } else {
       try {
         await _performFullAuthFlow();
       } catch (e) {
@@ -133,7 +131,7 @@ class FlutterAadOauth {
   Future<void> _performFullAuthFlow() async {
     String? code;
     try {
-      if (PlatformCheck.isWeb) {
+      if (kIsWeb) {
         _token = await _requestTokenWeb.requestToken();
       } else {
         code = await _requestCode.requestCode();
@@ -152,15 +150,15 @@ class FlutterAadOauth {
         //do nothing (because later we try to do a full oauth code flow request)
       }
     } else {
-      _performFullAuthFlow();
+      await _performFullAuthFlow();
     }
   }
 
   Future<void> _removeOldTokenOnFirstLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final _keyFreshInstall = "freshInstall";
+    const _keyFreshInstall = 'freshInstall';
     if (!prefs.getKeys().contains(_keyFreshInstall)) {
-      logout();
+      await logout();
       await prefs.setBool(_keyFreshInstall, false);
     }
   }

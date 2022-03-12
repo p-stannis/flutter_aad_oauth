@@ -1,4 +1,4 @@
-import 'package:flutter_aad_oauth/model/config.dart';
+import '../model/config.dart';
 
 class TokenRequestDetails {
   String? url;
@@ -6,23 +6,22 @@ class TokenRequestDetails {
   Map<String, String>? headers;
 
   TokenRequestDetails(Config config, String? code) {
-    this.url = config.tokenUrl;
-    this.params = {
-      "client_id": config.clientId,
-      "code": code,
-      "redirect_uri": config.redirectUri,
-      "grant_type": "authorization_code"
+    url = config.tokenUrl;
+    params = {
+      'client_id': config.clientId,
+      'code': code,
+      'redirect_uri': config.redirectUri,
+      'grant_type': 'authorization_code'
     };
 
-    if (config.resource != null)
-      params!.putIfAbsent("resource", () => config.resource);
+    if (config.resource != null) {
+      params!.putIfAbsent('resource', () => config.resource);
+    }
 
-    if (config.clientSecret != null)
-      params!.putIfAbsent("client_secret", () => config.clientSecret);
+    if (config.clientSecret != null) {
+      params!.putIfAbsent('client_secret', () => config.clientSecret);
+    }
 
-    this.headers = {
-      "Accept": "application/json",
-      "Content-Type": config.contentType
-    };
+    headers = {'Accept': 'application/json', 'Content-Type': config.contentType};
   }
 }

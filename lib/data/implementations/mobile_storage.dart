@@ -3,10 +3,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../i_storage.dart';
 
 class MobileStorage extends IStorage {
-  FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
   @override
   Future<void> delete({required String key}) async {
-    _secureStorage.delete(key: key);
+    await _secureStorage.delete(key: key);
   }
 
   @override
@@ -16,6 +16,6 @@ class MobileStorage extends IStorage {
 
   @override
   Future<void> write({required String key, required String value}) async {
-    _secureStorage.write(key: key, value: value);
+    await _secureStorage.write(key: key, value: value);
   }
 }

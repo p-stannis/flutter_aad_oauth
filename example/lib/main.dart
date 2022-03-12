@@ -1,13 +1,17 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 import 'package:flutter_aad_oauth/flutter_aad_oauth.dart';
 import 'package:flutter_aad_oauth/model/config.dart';
-import 'package:flutter/material.dart';
-import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -18,40 +22,40 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'AAD OAuth Demo',
-      theme: new ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'AAD OAuth Home'),
+      home: const MyHomePage(title: 'AAD OAuth Home'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, this.title}) : super(key: key);
   final String? title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const String TENANT_ID = "YOUR_TENANT_ID";
-  static const String CLIENT_ID = "YOUR_CLIENT_ID";
+  static const String TENANT_ID = 'YOUR_TENANT_ID';
+  static const String CLIENT_ID = 'YOUR_CLIENT_ID';
 
   late Config config;
   late FlutterAadOauth oauth = FlutterAadOauth(config);
 
   @override
   initState() {
-    var redirectUri;
+    Object redirectUri;
     late String scope;
     late String responseType;
 
-    if (PlatformCheck.isWeb) {
-      scope = "openid profile email offline_access user.read";
-      responseType = "id_token+token";
+    if (kIsWeb) {
+      scope = 'openid profile email offline_access user.read';
+      responseType = 'id_token+token';
       final currentUri = Uri.base;
       redirectUri = Uri(
         host: currentUri.host,
@@ -60,16 +64,16 @@ class _MyHomePageState extends State<MyHomePage> {
         path: '/authRedirect.html',
       );
     } else {
-      scope = "openid profile offline_access";
-      responseType = "code";
-      redirectUri = "https://login.live.com/oauth20_desktop.srf";
+      scope = 'openid profile offline_access';
+      responseType = 'code';
+      redirectUri = 'https://login.live.com/oauth20_desktop.srf';
     }
 
-    config = new Config(
+    config = Config(
         azureTennantId: TENANT_ID,
         clientId: CLIENT_ID,
         scope: scope,
-        redirectUri: "$redirectUri",
+        redirectUri: '$redirectUri',
         responseType: responseType);
 
     oauth = FlutterAadOauth(config);
@@ -78,29 +82,30 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title!),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title!),
       ),
       body: ListView(
         children: <Widget>[
           ListTile(
             title: Text(
-              "AzureAD OAuth",
+              'AzureAD OAuth',
               style: Theme.of(context).textTheme.headline5,
             ),
           ),
           ListTile(
-            leading: Icon(Icons.launch),
-            title: Text('Login'),
+            leading: const Icon(Icons.launch),
+            title: const Text('Login'),
             onTap: () {
               login();
             },
           ),
           ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('Logout'),
+            leading: const Icon(Icons.delete),
+            title: const Text('Logout'),
             onTap: () {
               logout();
             },
@@ -115,9 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void showMessage(String text) {
-    var alert = new AlertDialog(content: new Text(text), actions: <Widget>[
-      new ElevatedButton(
-          child: const Text("Ok"),
+    var alert = AlertDialog(content: Text(text), actions: <Widget>[
+      ElevatedButton(
+          child: const Text('Ok'),
           onPressed: () {
             Navigator.pop(context);
           })
@@ -128,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void checkIsLogged() async {
     if (await oauth.tokenIsValid()) {
       String? accessToken = await oauth.getAccessToken();
-      showMessage("Access token: $accessToken");
+      showMessage('Access token: $accessToken');
     }
   }
 
@@ -136,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       await oauth.login();
       String? accessToken = await oauth.getAccessToken();
-      showMessage("Logged in successfully, your access token: $accessToken");
+      showMessage('Logged in successfully, your access token: $accessToken');
     } catch (e) {
       showError(e);
     }
@@ -144,6 +149,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void logout() async {
     await oauth.logout();
-    showMessage("Logged out");
+    showMessage('Logged out');
   }
 }

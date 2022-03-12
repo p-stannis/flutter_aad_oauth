@@ -1,0 +1,13 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_relative_imports: true
+    avoid_print: true
+    unawaited_futures: true
+    prefer_single_quotes: true
+    cancel_subscriptions: true
+    avoid_slow_async_io: true
+    no_duplicate_case_values: true
+    unnecessary_statements: true
+    avoid_redundant_argument_values: true
