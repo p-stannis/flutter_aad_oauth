@@ -40,23 +40,23 @@ class RequestTokenWeb {
     html.window.onMessage.listen((event) {
       var tokenParm = 'access_token';
       if (event.data.toString().contains(tokenParm)) {
-        _geturlData(event.data.toString());
+        _getUrlData(event.data.toString());
       }
       if (event.data.toString().contains('error')) {
         _closeWebWindow();
-        throw Exception('Access denied or authentation canceled.');
+        throw Exception('Access denied or authentication canceled.');
       }
     });
     _popupWin = html.window.open(initialURL, 'Microsoft Auth', 'width=800, height=900, scrollbars=yes');
   }
 
-  _geturlData(String _url) {
+  _getUrlData(String _url) {
     var url = _url.replaceFirst('#', '?');
     Uri uri = Uri.parse(url);
 
     if (uri.queryParameters['error'] != null) {
       _closeWebWindow();
-      _onCodeListener.addError(Exception('Access denied or authentation canceled.'));
+      _onCodeListener.addError(Exception('Access denied or authentication canceled.'));
     }
 
     var token = uri.queryParameters;

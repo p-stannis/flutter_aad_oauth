@@ -1,5 +1,5 @@
 ## 2.3.0
-* Update dependency to latest version 
+* Update dependencies and compileSdkVersion to latest versions
 
 ## 2.2.0
 * Fixed Display ID mismatch found

@@ -39,20 +39,20 @@ class RequestCode {
     var webView = WebView(
       initialUrl: initialURL,
       javascriptMode: JavascriptMode.unrestricted,
-      onPageFinished: (url) => _geturlData(url),
+      onPageFinished: (url) => _getUrlData(url),
     );
 
     await Navigator.of(_config.context!)
         .push(MaterialPageRoute(builder: (context) => SafeArea(child: webView)));
   }
 
-  _geturlData(String _url) {
+  _getUrlData(String _url) {
     var url = _url.replaceFirst('#', '?');
     Uri uri = Uri.parse(url);
 
     if (uri.queryParameters['error'] != null) {
       Navigator.of(_config.context!).pop();
-      _onCodeListener.addError(Exception('Access denied or authentation canceled.'));
+      _onCodeListener.addError(Exception('Access denied or authentication canceled.'));
     }
 
     var token = uri.queryParameters['code'];

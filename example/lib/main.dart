@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     config = Config(
-        azureTennantId: TENANT_ID,
+        azureTenantId: TENANT_ID,
         clientId: CLIENT_ID,
         scope: scope,
         redirectUri: '$redirectUri',
