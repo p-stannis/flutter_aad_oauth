@@ -15,12 +15,12 @@ Afterwards you have to initialize the library as follow:
 
 ```dart
 final Config config = Config(
-        azureTenantId: "$TENANT_ID",
+        azureTennantId: "$TENANT_ID",
         clientId: "$CLIENT_ID",
         scope: "$scope",
         redirectUri: "$redirectUri",
         responseType: "$responseType");
-final AadOAuth oauth = AadOAuth(config);
+final FlutterAadOauth oauth = FlutterAadOauth(config);
 ```
 This allows you to pass in an tenant ID, client ID, scope and redirect url.
 ### Four important things:
