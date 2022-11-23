@@ -3,7 +3,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../i_storage.dart';
 
 class MobileStorage extends IStorage {
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+    ),
+  );
+
   @override
   Future<void> delete({required String key}) async {
     await _secureStorage.delete(key: key);
