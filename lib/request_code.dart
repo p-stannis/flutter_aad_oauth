@@ -41,6 +41,7 @@ class RequestCode {
     var webView = WebView(
       initialUrl: initialURL,
       javascriptMode: JavascriptMode.unrestricted,
+      onPageStarted: (url) => _handlePageStartData(url),
       onPageFinished: (url) => _getUrlData(url),
     );
 
@@ -88,5 +89,13 @@ class RequestCode {
 
   void setContext(BuildContext context) {
     _config.context = context;
+  }
+
+  _handlePageStartData(String url) {
+    // early redirect to fetch the code from the url without
+    // waiting for the the full page load
+    if(url.contains(_config.redirectUri)) {
+      _getUrlData(url);
+    }
   }
 }
