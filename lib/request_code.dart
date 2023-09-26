@@ -46,7 +46,16 @@ class RequestCode {
     );
 
     await Navigator.of(_config.context!).push(
-        MaterialPageRoute(builder: (context) => SafeArea(child: webView)));
+      MaterialPageRoute(
+        builder: (context) => WillPopScope(
+          onWillPop: () async {
+            _onCodeListener.add('');
+            return true;
+          },
+          child: SafeArea(child: webView),
+        ),
+      ),
+    );
   }
 
   _getUrlData(String _url) {
